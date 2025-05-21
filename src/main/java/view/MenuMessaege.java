@@ -82,6 +82,9 @@ public class MenuMessaege {
                     sc.nextLine(); // Limpiar buffer
                     MessegeCRUD.deleteMessage(idEliminar);
                     break;
+                case 5:
+                    System.out.println("Saliendo del programa...");
+                    break;
 
                 default:
                     System.out.println("Opción no válida");
