@@ -3,6 +3,8 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import io.github.cdimascio.dotenv.Dotenv;
+
 
 // complete singleton application
 public class ConnectionDB2 {
@@ -10,11 +12,19 @@ public class ConnectionDB2 {
     private Connection connected;
 
     private ConnectionDB2() throws SQLException {
-        String url = "jdbc:mysql://localhost:3308/mensajesapp";
-        String user = "root";
-        String password = "";
-        this.connected = DriverManager.getConnection(url, user, password);
-        System.out.println("Conexión exitosa");
+        Dotenv dotenv = Dotenv.load();
+        try{
+            connected = DriverManager.getConnection("jdbc:mysql://"
+                            +dotenv.get("DATABASE_HOST")+
+                            ":"+dotenv.get("DATABASE_PORT")+
+                            "/"+dotenv.get("DATABASE_NAME")+"",
+                    dotenv.get("DATABASE_USER"),
+                    dotenv.get("DATABASE_PASSWORD"));
+            System.out.println("Conexión exitosa");
+        }catch(Exception e){
+            System.out.println(e);
+        }
+
     }
 
     public static synchronized ConnectionDB2 getInstance() throws SQLException {

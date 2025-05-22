@@ -9,6 +9,7 @@ import java.util.List;
 public class MessegeCRUD
 {
     public static void createMessage(Message nuevoMensaje) {
+
         if (nuevoMensaje.getMessage() == null || nuevoMensaje.getMessage().isEmpty() ||
                 nuevoMensaje.getAutor_Message() == null || nuevoMensaje.getAutor_Message().isEmpty()) {
             System.out.println("Error: mensaje o autor vacío.");

@@ -4,13 +4,13 @@ package model;
 public class Message {
     int id_Message;
     String Message;
-    String autor_Message;
+    int autor_Message;
     String fecha_Message;
 
     public Message(){
     }
 
-    public Message(String Message, String autor_Message, String fecha_Message) {
+    public Message(String Message, int autor_Message, String fecha_Message) {
         this.Message = Message;
         this.autor_Message = autor_Message;
         this.fecha_Message = fecha_Message;
@@ -34,11 +34,11 @@ public class Message {
         this.Message = Message;
     }
 
-    public String getAutor_Message() {
+    public int getAutor_Message() {
         return autor_Message;
     }
 
-    public void setAutor_Message(String autor_Message) {
+    public void setAutor_Message(int autor_Message) {
         this.autor_Message = autor_Message;
     }
 

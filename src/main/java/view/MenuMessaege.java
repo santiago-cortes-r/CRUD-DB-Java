@@ -1,16 +1,17 @@
 package view;
 
 import model.Message;
+import model.User;
 import  service.MessegeCRUD;
 
 import java.util.Scanner;
 
 import static service.MessegeCRUD.readMessages;
 
-public class Menu {
+public class MenuMessaege {
 
-    public static void mostrarMenu() {
-        Scanner sc = new Scanner(System.in);
+    public static void mostrarMenu(User resultado, Scanner sc) {
+
         int opcion = 0;
 
         do {
@@ -29,12 +30,12 @@ public class Menu {
                 case 1:
                     System.out.print("Escribe tu mensaje: ");
                     String texto = sc.nextLine();
-                    System.out.print("Autor del mensaje: ");
-                    String autor = sc.nextLine();
+
 
                     Message nuevoMensaje = new Message();
                     nuevoMensaje.setMessage(texto);
-                    nuevoMensaje.setAutor_Message(autor);
+                    int id = resultado.getUserId();
+                    nuevoMensaje.setAutor_Message(id);
                     MessegeCRUD.createMessage(nuevoMensaje);
                     break;
 
@@ -50,7 +51,7 @@ public class Menu {
                             break;
                         case 2:
                             System.out.println("ingresa el id del mensaje a mostrar:");
-                            int id = sc.nextInt();
+                            id = sc.nextInt();
                             MessegeCRUD.readOneMessages(id);
                             break;
                     }
@@ -65,7 +66,7 @@ public class Menu {
                     String nuevoTexto = sc.nextLine();
 
                     System.out.print("Nuevo autor: ");
-                    String nuevoAutor = sc.nextLine();
+                    int nuevoAutor = sc.nextInt();
 
                     Message mensajeEditado = new Message();
                     mensajeEditado.setId_Message(idEditar);

@@ -1,9 +1,13 @@
-import  view.Menu;
+import model.User;
+import service.UserService;
+import view.MenuUser;
 
-public class Initial
-{
+import java.util.Scanner;
+
+public class Initial {
     public static void main(String[] args) {
-
-        Menu.mostrarMenu();
+        Scanner sc = new Scanner(System.in);
+        MenuUser.mainMenu(sc);
+        sc.close();
     }
 }
