@@ -1,4 +1,6 @@
 # src/main/resources/application.properties
-app.DB_USER=user
-app.DB_PASSWORD=password
-app.DB_URL=jdbc:mysql://localhost:3306/mensajesapp
+DATABASE_HOST=localhost
+DATABASE_PORT=3308
+DATABASE_NAME=mensajesApp
+DATABASE_USER=
+DATABASE_PASSWORD=

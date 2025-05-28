@@ -11,7 +11,7 @@ public class MessegeCRUD
     public static void createMessage(Message nuevoMensaje) {
 
         if (nuevoMensaje.getMessage() == null || nuevoMensaje.getMessage().isEmpty() ||
-                nuevoMensaje.getAutor_Message() == null || nuevoMensaje.getAutor_Message().isEmpty()) {
+                nuevoMensaje.getAutor_Message() == 0) {
             System.out.println("Error: mensaje o autor vacío.");
             return;
         }
@@ -53,7 +53,7 @@ public class MessegeCRUD
             System.out.printf("| %s | %s | %s | %s |\n",
                     Utils.truncateAndPad(String.valueOf(msg.getId_Message()), ID_WIDTH),
                     Utils.truncateAndPad(msg.getMessage(), MSG_WIDTH),
-                    Utils.truncateAndPad(msg.getAutor_Message(), AUTOR_WIDTH),
+                    Utils.truncateAndPad(msg.getAutor_Message()+"", AUTOR_WIDTH),
                     Utils.truncateAndPad(msg.getFecha_Message(), FECHA_WIDTH));
         }
 

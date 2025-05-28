@@ -7,18 +7,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageDAO {
+public class MessageDAO extends BaseDAO{
 
     public static boolean insertMessage(Message message) {
 
         String query = "INSERT INTO mensajes (mensaje, autor_mensaje, fecha_mensaje) VALUES (?, ?, ?)";
 
-        try (Connection db_connect = ConnectionDB2.getInstance().getConnection();
-             PreparedStatement ps = db_connect.prepareStatement(query))
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(query))
         {
 
             ps.setString(1, message.getMessage());
-            ps.setString(2, message.getAutor_Message());
+            ps.setString(2, message.getAutor_Message() + "");
 
             // Enviar hora actual para control de futuras prubas con fechas especificas
             Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
@@ -35,16 +36,17 @@ public class MessageDAO {
     }
     public static List<Message> getAllMessagesDB() {
         String query = """
-        SELECT m.id_mensaje, m.mensaje, m.fecha, u.nombre_completo 
+        SELECT m.id_mensaje, m.mensaje, m.fecha, u.full_name, m.user_id 
         FROM mensajes m 
-        JOIN usuarios u ON m.id_usuario = u.id_usuario
+        JOIN usuarios u ON m.user_id = u.id_user
     """;
 
         List<Message> mensajes = new ArrayList<>();
 
-        try (
-                Connection db_connect = ConnectionDB2.getInstance().getConnection();
-                PreparedStatement ps = db_connect.prepareStatement(query);
+
+        try (Connection con = getConnection();
+
+                PreparedStatement ps = con.prepareStatement(query);
                 ResultSet rs = ps.executeQuery()
         ) {
             while (rs.next()) {
@@ -52,7 +54,7 @@ public class MessageDAO {
                 mensaje.setId_Message(rs.getInt("id_mensaje"));
                 mensaje.setMessage(rs.getString("mensaje"));
                 mensaje.setFecha_Message(rs.getString("fecha")); // o "fecha_mensaje" según tu columna real
-                mensaje.setAutor_Message(rs.getString("nombre_completo")); // nombre del usuario
+                mensaje.setAutor_Message(rs.getInt("user_id")); // nombre del usuario
 
                 mensajes.add(mensaje);
             }
@@ -67,10 +69,9 @@ public class MessageDAO {
         String query = "SELECT * FROM mensajes WHERE id_mensaje = ?";
         Message mensaje = null;
 
-        try (
-                Connection db_connect = ConnectionDB2.getInstance().getConnection();
-                PreparedStatement ps = db_connect.prepareStatement(query)
-        ) {
+
+        try (Connection con = getConnection();
+                PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, id); // Establecer el valor del parámetro ?
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -78,7 +79,7 @@ public class MessageDAO {
                     mensaje = new Message();
                     mensaje.setId_Message(rs.getInt("id_mensaje"));
                     mensaje.setMessage(rs.getString("mensaje"));
-                    mensaje.setAutor_Message(rs.getString("autor_mensaje"));
+                    mensaje.setAutor_Message(rs.getInt("id_usuario"));
                     mensaje.setFecha_Message(rs.getString("fecha_mensaje"));
                 }
             }
@@ -88,6 +89,7 @@ public class MessageDAO {
             System.out.println(e);
         }
 
+
         return mensaje;
     }
     // package dao;
@@ -96,8 +98,8 @@ public class MessageDAO {
         String query = "DELETE FROM mensajes WHERE id_mensaje = ?";
 
         try (
-                Connection db_connect = ConnectionDB2.getInstance().getConnection();
-                PreparedStatement ps = db_connect.prepareStatement(query)
+                Connection con = getConnection();
+                PreparedStatement ps = con.prepareStatement(query)
         ) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -120,8 +122,8 @@ public class MessageDAO {
         String query = "UPDATE mensajes SET mensaje = ?, autor_mensaje = ? WHERE id_mensaje = ?";
 
         try (
-                Connection db_connect = ConnectionDB2.getInstance().getConnection();
-                PreparedStatement ps = db_connect.prepareStatement(query)
+                Connection con = getConnection();
+                PreparedStatement ps = con.prepareStatement(query)
         ) {
             ps.setString(1, message.getMessage());
             ps.setInt(2, message.getAutor_Message());
